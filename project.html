@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fenwick Optics — Chris Morgan</title>
+<meta name="description" content="Fenwick Optics — brand identity and web design by Chris Morgan.">
+
+<!-- Fonts -->
+<link href="https://db.onlinewebfonts.com/c/302b82380cd9405bc10d5ea80045e6ac?family=Campton-Bold" rel="stylesheet">
+<link href="https://db.onlinewebfonts.com/c/dc9b06af64b02efa71cd0d1e97cb55e6?family=Campton+Book" rel="stylesheet">
+
+<style>
+  :root{
+    --font-bold: 'Campton-Bold', 'Helvetica Neue', Arial, sans-serif;
+    --font-book: 'Campton Book', 'Helvetica Neue', Arial, sans-serif;
+    --ink: #0b0b0b;
+    --paper: #fdfdfb;
+    --line: rgba(11,11,11,0.12);
+    --header-pad-x: 48px;
+    --header-pad-y: 28px;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin: 0;
+    padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-book);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a{ color: inherit; }
+  img{ display:block; max-width:100%; }
+
+  :focus-visible{
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+
+  /* ================= Header (shared with home page) ================= */
+  .site-header{
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--header-pad-y) var(--header-pad-x);
+    color: var(--paper);
+    transition: color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  body.scrolled .site-header{
+    color: var(--ink);
+    background-color: rgba(253,253,251,0.86);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 1px 0 var(--line);
+  }
+
+  .logo{
+    font-family: var(--font-bold);
+    font-weight: 700;
+    font-size: clamp(26px, 3.4vw, 40px);
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .nav{
+    display: flex;
+    align-items: center;
+    gap: clamp(24px, 4vw, 52px);
+  }
+
+  .nav a{
+    font-family: var(--font-book);
+    font-weight: 400;
+    font-size: 19px;
+    text-decoration: none;
+    line-height: 1;
+    padding-bottom: 6px;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.2s ease, opacity 0.2s ease;
+  }
+
+  .nav a.active{ border-bottom-color: currentColor; }
+  .nav a:not(.active):hover{ opacity: 0.6; }
+
+  .nav .social{ display: flex; align-items: center; }
+  .nav .social svg{ width: 19px; height: 19px; fill: currentColor; }
+
+  .nav-toggle{
+    display: none;
+    background: none;
+    border: 0;
+    padding: 6px;
+    cursor: pointer;
+    color: inherit;
+  }
+  .nav-toggle svg{ width: 26px; height: 26px; }
+
+  /* ================= Project intro ================= */
+  .project-intro{
+    position: relative;
+    padding: clamp(140px, 20vw, 220px) var(--header-pad-x) clamp(56px, 8vw, 88px);
+    background: linear-gradient(180deg, #0a1224 0%, #101b36 55%, #16294f 100%);
+    color: var(--paper);
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .project-intro::before{
+    content: '';
+    position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(90deg, rgba(253,253,251,0.05) 0 1px, transparent 1px 20%);
+    pointer-events: none;
+  }
+
+  .project-title{
+    position: relative;
+    margin: 0 auto;
+    max-width: 1100px;
+    font-family: var(--font-bold);
+    font-weight: 700;
+    font-size: clamp(40px, 8vw, 108px);
+    line-height: 0.98;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    background: linear-gradient(180deg, #f4f5f7 0%, #b9bfca 55%, #5b6577 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .project-description{
+    position: relative;
+    margin: clamp(20px, 3vw, 32px) auto 0;
+    max-width: 620px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(253,253,251,0.6);
+  }
+
+  .project-meta{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    gap: clamp(48px, 8vw, 120px);
+    margin-top: clamp(32px, 5vw, 56px);
+    padding-top: 20px;
+    border-top: 1px solid rgba(253,253,251,0.14);
+    max-width: 620px;
+    margin-left: auto;
+    margin-right: auto;
+    flex-wrap: wrap;
+    text-align: left;
+  }
+
+  .project-meta-label{
+    margin: 0 0 8px;
+    font-family: var(--font-bold);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(253,253,251,0.4);
+  }
+
+  .project-meta-value{
+    margin: 0;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(253,253,251,0.75);
+    line-height: 1.8;
+  }
+
+  /* ================= Media tiles (reused pattern from Selected Work) ================= */
+  .project-media{ display: flex; flex-direction: column; gap: 4px; }
+  .project-row{ display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+
+  .project-tile{
+    position: relative;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .project-tile--full{ aspect-ratio: 16 / 9.4; }
+  .project-tile--half{ aspect-ratio: 1 / 1; }
+  .project-tile--breather{ aspect-ratio: 21 / 10; }
+
+  .project-tile-inner{
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(16px, 3vw, 28px);
+    padding: clamp(24px, 5vw, 48px);
+    text-align: center;
+  }
+
+  .project-caption{
+    margin: 0;
+    max-width: 26ch;
+    font-family: var(--font-bold);
+    font-weight: 700;
+    font-size: clamp(15px, 2vw, 24px);
+    line-height: 1.3;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.45);
+  }
+
+  .project-tile--half .project-caption{ font-size: clamp(13px, 1.6vw, 18px); max-width: 22ch; }
+
+  .sparkle{ width: 26px; height: 26px; opacity: 0.9; }
+
+  /* --- device silhouettes (placeholder mockups) --- */
+  .device-frame{ transition: transform 0.5s ease; }
+  .project-tile:hover .device-frame{ transform: translateY(-2%) scale(1.015); }
+
+  .device-screen{
+    position: relative;
+    border-radius: 6px;
+    background: linear-gradient(160deg, rgba(255,255,255,0.14), rgba(255,255,255,0.03));
+    border: 1px solid rgba(255,255,255,0.22);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .device-mark{
+    width: 20%; height: 20%;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.85);
+    opacity: 0.9;
+  }
+
+  .device--monitor{ width: 50%; }
+  .device--monitor .device-screen{ width:100%; aspect-ratio: 16/10; }
+  .device--monitor .device-stand{ width: 14%; height: 5%; margin: 0 auto; background: rgba(255,255,255,0.22); border-radius: 0 0 4px 4px; }
+  .device--monitor .device-base{ width: 30%; height: 3%; margin: 0 auto; background: rgba(255,255,255,0.16); border-radius: 3px; }
+
+  .device--laptop{ width: 60%; }
+  .device--laptop .device-screen{ width: 100%; aspect-ratio: 16/9.5; }
+  .device--laptop .device-base{
+    width: 118%; height: 6%; margin-left: -9%;
+    background: rgba(255,255,255,0.18); border-radius: 3px;
+    clip-path: polygon(6% 0, 94% 0, 100% 100%, 0 100%);
+  }
+
+  .device--phone{ width: 30%; }
+  .device--phone .device-screen{ width: 100%; aspect-ratio: 9/18.5; border-radius: 22px; }
+  .device--phone .device-mark{ width: 30%; height: 14%; border-radius: 4px; }
+
+  /* ================= Footer (shared with home page) ================= */
+  .page{ position: relative; z-index: 1; background: var(--paper); }
+
+  .site-footer{
+    position: sticky;
+    bottom: 0;
+    z-index: 0;
+    height: 100vh;
+    min-height: 560px;
+    background: var(--ink);
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .footer-inner{
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 var(--header-pad-x);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: clamp(32px, 6vw, 56px);
+  }
+
+  .footer-lead{
+    margin: 0;
+    font-family: var(--font-book);
+    font-weight: 400;
+    font-size: clamp(34px, 6vw, 76px);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+  }
+
+  .footer-email{
+    font-family: var(--font-bold);
+    font-weight: 700;
+    font-size: clamp(20px, 2.4vw, 28px);
+    text-decoration: none;
+    border-bottom: 2px solid currentColor;
+    padding-bottom: 4px;
+  }
+
+  .footer-bottom{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-top: clamp(24px, 5vw, 48px);
+    border-top: 1px solid rgba(253,253,251,0.18);
+    font-size: 14px;
+  }
+
+  .footer-logo{ font-family: var(--font-bold); font-weight: 700; font-size: 18px; }
+  .footer-social{ display: flex; gap: 28px; }
+  .footer-social a{ text-decoration: none; opacity: 0.8; }
+  .footer-social a:hover{ opacity: 1; }
+  .footer-copy{ opacity: 0.6; }
+
+  /* ================= Mobile ================= */
+  @media (max-width: 760px){
+    :root{ --header-pad-x: 22px; --header-pad-y: 20px; }
+
+    .nav{
+      position: fixed; inset: 0; z-index: 45;
+      flex-direction: column; justify-content: center; align-items: flex-start;
+      gap: 28px; padding: 0 32px;
+      background: rgba(11,11,11,0.97);
+      color: var(--paper);
+      transform: translateY(-100%);
+      transition: transform 0.35s ease;
+    }
+    .nav[data-open="true"]{ transform: translateY(0); }
+    .nav a{ font-size: 32px; }
+    .nav-toggle{ display: inline-flex; z-index: 46; }
+
+    .project-meta{ gap: 32px; }
+
+    .project-row{ grid-template-columns: 1fr; }
+    .project-tile--half{ aspect-ratio: 4/3.4; }
+
+    .footer-bottom{ flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .nav, .device-frame{ transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="logo" href="index.html">chrismorgan</a>
+
+  <nav class="nav" id="siteNav" data-open="false">
+    <a href="showcase.html" class="active">showcase</a>
+    <a href="about.html">about</a>
+    <a href="contact.html">contact</a>
+    <a class="social" href="https://instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c2.72 0 3.06.01 4.12.06 1.06.05 1.79.22 2.43.47.66.26 1.22.6 1.77 1.15.55.55.9 1.11 1.15 1.77.25.64.42 1.37.47 2.43.05 1.06.06 1.4.06 4.12s-.01 3.06-.06 4.12c-.05 1.06-.22 1.79-.47 2.43-.26.66-.6 1.22-1.15 1.77-.55.55-1.11.9-1.77 1.15-.64.25-1.37.42-2.43.47-1.06.05-1.4.06-4.12.06s-3.06-.01-4.12-.06c-1.06-.05-1.79-.22-2.43-.47-.66-.26-1.22-.6-1.77-1.15-.55-.55-.9-1.11-1.15-1.77-.25-.64-.42-1.37-.47-2.43C2.01 15.06 2 14.72 2 12s.01-3.06.06-4.12c.05-1.06.22-1.79.47-2.43.26-.66.6-1.22 1.15-1.77.55-.55 1.11-.9 1.77-1.15.64-.25 1.37-.42 2.43-.47C8.94 2.01 9.28 2 12 2zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4zm5.4-8.4a1.2 1.2 0 1 0 0-2.4 1.2 1.2 0 0 0 0 2.4z"/></svg>
+    </a>
+  </nav>
+
+  <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="siteNav">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+      <path d="M3 6h18M3 12h18M3 18h18"/>
+    </svg>
+  </button>
+</header>
+
+<div class="page">
+
+  <section class="project-intro">
+    <h1 class="project-title">Fenwick<br>Optics</h1>
+    <p class="project-description">Fenwick Optics is a Brooklyn-based eyewear studio behind some of the quietest, most deliberate frames in independent film and editorial fashion, from a recurring wardrobe credit across three awards-season features to a made-to-order collection worn by working optometrists across the Northeast.</p>
+
+    <div class="project-meta">
+      <div>
+        <p class="project-meta-label">Services</p>
+        <p class="project-meta-value">Brand Identity<br>Web Design</p>
+      </div>
+      <div>
+        <p class="project-meta-label">Location &amp; Year</p>
+        <p class="project-meta-value">Brooklyn, US &mdash; 2026</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="project-media">
+
+    <div class="project-tile project-tile--full" style="background-image:linear-gradient(135deg,#171029 0%,#2c1136 40%,#3a1550 70%,#120a22 100%);">
+      <div class="project-tile-inner">
+        <div class="device-frame device--monitor">
+          <div class="device-screen"><div class="device-mark"></div></div>
+          <div class="device-stand"></div>
+          <div class="device-base"></div>
+        </div>
+        <p class="project-caption">Where craft meets clarity</p>
+      </div>
+    </div>
+
+    <div class="project-row">
+      <div class="project-tile project-tile--half" style="background-image:linear-gradient(160deg,#1a1330 0%,#2c1a44 100%);">
+        <div class="project-tile-inner">
+          <div class="device-frame device--phone">
+            <div class="device-screen"><div class="device-mark"></div></div>
+          </div>
+          <p class="project-caption">Powered by Fenwick</p>
+        </div>
+      </div>
+
+      <div class="project-tile project-tile--half" style="background-image:linear-gradient(160deg,#191233 0%,#251a3f 60%,#3a2456 100%);">
+        <div class="project-tile-inner">
+          <div class="device-frame device--laptop">
+            <div class="device-screen"><div class="device-mark"></div></div>
+            <div class="device-base"></div>
+          </div>
+          <p class="project-caption">So whether you're browsing in&#8209;store or ordering from home&hellip;</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-tile project-tile--breather" style="background-image:linear-gradient(180deg,#0c1020 0%,#151d38 50%,#0c1020 100%);">
+      <svg class="sparkle" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 0c.6 5.9 1.6 9.4 3.5 11.3C17.4 13.2 20.9 14.2 24 15c-3.1.8-6.6 1.8-8.5 3.7C13.6 20.6 12.6 24.1 12 30c-.6-5.9-1.6-9.4-3.5-11.3C6.6 16.8 3.1 15.8 0 15c3.1-.8 6.6-1.8 8.5-3.7C10.4 9.4 11.4 5.9 12 0z" transform="scale(0.8)"/></svg>
+    </div>
+
+    <div class="project-row">
+      <div class="project-tile project-tile--half" style="background-image:linear-gradient(160deg,#111a33 0%,#1b2c52 100%);">
+        <div class="project-tile-inner">
+          <div class="device-frame device--laptop">
+            <div class="device-screen"><div class="device-mark"></div></div>
+            <div class="device-base"></div>
+          </div>
+          <p class="project-caption" style="font-family:var(--font-bold); font-size:clamp(22px,3vw,34px); text-transform:none;">Fenwick</p>
+        </div>
+      </div>
+
+      <div class="project-tile project-tile--half" style="background-image:linear-gradient(160deg,#0e1526 0%,#1a2540 100%);">
+        <div class="project-tile-inner">
+          <div class="device-frame device--phone">
+            <div class="device-screen"><div class="device-mark"></div></div>
+          </div>
+          <p class="project-caption">We make seeing part of the story.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<footer class="site-footer" id="contact">
+  <div class="footer-inner">
+    <p class="footer-lead">Have a brand that<br>needs somewhere to go?</p>
+    <a class="footer-email" href="mailto:hello@chrismorgan.xyz">hello@chrismorgan.xyz</a>
+    <div class="footer-bottom">
+      <span class="footer-logo">chrismorgan</span>
+      <div class="footer-social">
+        <a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+      <span class="footer-copy">&copy; 2026 Chris Morgan</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  var toggle = document.getElementById('navToggle');
+  var nav = document.getElementById('siteNav');
+
+  toggle.addEventListener('click', function(){
+    var isOpen = nav.getAttribute('data-open') === 'true';
+    nav.setAttribute('data-open', String(!isOpen));
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+  });
+
+  nav.querySelectorAll('a').forEach(function(link){
+    link.addEventListener('click', function(){
+      nav.setAttribute('data-open', 'false');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  var heroEl = document.querySelector('.project-intro');
+  function onScroll(){
+    var threshold = heroEl ? heroEl.offsetHeight * 0.7 : 400;
+    document.body.classList.toggle('scrolled', window.scrollY > threshold);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Chris Morgan</title>
+<meta name="description" content="Get in touch with Chris Morgan — brand architecture, marketing and web design.">
+
+<!-- Fonts -->
+<link href="https://db.onlinewebfonts.com/c/302b82380cd9405bc10d5ea80045e6ac?family=Campton-Bold" rel="stylesheet">
+<link href="https://db.onlinewebfonts.com/c/dc9b06af64b02efa71cd0d1e97cb55e6?family=Campton+Book" rel="stylesheet">
+
+<style>
+  :root{
+    --font-bold: 'Campton-Bold', 'Helvetica Neue', Arial, sans-serif;
+    --font-book: 'Campton Book', 'Helvetica Neue', Arial, sans-serif;
+    --ink: #0b0b0b;
+    --paper: #fdfdfb;
+    --line: rgba(11,11,11,0.12);
+    --header-pad-x: 48px;
+    --header-pad-y: 28px;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin: 0;
+    padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-book);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a{ color: inherit; }
+
+  :focus-visible{
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+
+  /* ================= Header (shared with home page) ================= */
+  .site-header{
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--header-pad-y) var(--header-pad-x);
+    color: var(--paper);
+    transition: color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  body.scrolled .site-header{
+    color: var(--ink);
+    background-color: rgba(253,253,251,0.86);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 1px 0 var(--line);
+  }
+
+  .logo{
+    font-family: var(--font-bold);
+    font-weight: 700;
+    font-size: clamp(26px, 3.4vw, 40px);
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .nav{
+    display: flex;
+    align-items: center;
+    gap: clamp(24px, 4vw, 52px);
+  }
+
+  .nav a{
+    font-family: var(--font-book);
+    font-weight: 400;
+    font-size: 19px;
+    text-decoration: none;
+    line-height: 1;
+    padding-bottom: 6px;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.2s ease, opacity 0.2s ease;
+  }
+
+  .nav a.active{ border-bottom-color: currentColor; }
+  .nav a:not(.active):hover{ opacity: 0.6; }
+
+  .nav .social{ display: flex; align-items: center; }
+  .nav .social svg{ width: 19px; height: 19px; fill: currentColor; }
+
+  .nav-toggle{
+    display: none;
+    background: none;
+    border: 0;
+    padding: 6px;
+    cursor: pointer;
+    color: inherit;
+  }
+  .nav-toggle svg{ width: 26px; height: 26px; }
+
+  /* ================= Intro ================= */
+  .contact-hero{
+    background: var(--ink);
+    color: var(--paper);
+    padding: clamp(140px, 22vw, 240px) var(--header-pad-x) clamp(64px, 9vw, 110px);
+  }
+
+  .contact-hero-inner{ max-width: 1440px; margin: 0 auto; }
+
+  .contact-headline{
+    margin: 0;
+    font-family: var(--font-book);
+    font-weight: 400;
+    font-size: clamp(44px, 8vw, 108px);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+  }
+
+  .contact-sub{
+    margin: clamp(20px, 3vw, 28px) 0 0;
+    max-width: 46ch;
+    font-size: clamp(17px, 1.6vw, 20px);
+    line-height: 1.55;
+    color: rgba(253,253,251,0.62);
+  }
+
+  /* ================= Main: info + form ================= */
+  .contact-main{
+    padding: clamp(72px, 10vw, 128px) var(--header-pad-x);
+  }
+
+  .contact-grid{
+    max-width: 1440px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(48px, 7vw, 120px);
+    align-items: start;
+  }
+
+  /* --- Left: direct info --- */
+  .contact-info-block{ margin-bottom: clamp(32px, 5vw, 48px); }
+  .contact-info-block:last-child{ margin-bottom: 0; }
+
+  .contact-info-label{
+    margin: 0 0 10px;
+    font-size: 14px;
+    color: rgba(11,11,11,0.5);
+  }
+
+  .contact-email-link{
+    display: inline-block;
+    font-family: var(--font-bold);
+    font-weight: 700;
+    font-size: clamp(24px, 2.6vw, 32px);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 2px;
+  }
+
+  .contact-info-text{
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.6;
+    max-width: 34ch;
+  }
+
+  .contact-social-list{
+    display: flex;
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .contact-social-list a{
+    font-size: 16px;
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 2px;
+    transition: border-color 0.2s ease;
+  }
+  .contact-social-list a:hover{ border-color: var(--ink); }
+
+  /* --- Right: form --- */
+  .contact-form{ display: flex; flex-direction: column; gap: clamp(24px, 3vw, 32px); }
+
+  .form-row{ display: grid; grid-template-columns: 1fr 1fr; gap: clamp(20px, 3vw, 32px); }
+
+  .field{ display: flex; flex-direction: column; gap: 8px; }
+
+  .field label{
+    font-size: 14px;
+    color: rgba(11,11,11,0.55);
+  }
+
+  .field input,
+  .field select,
+  .field textarea{
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    background: transparent;
+    padding: 10px 2px;
+    font-family: var(--font-book);
+    font-size: 17px;
+    color: var(--ink);
+    border-radius: 0;
+    transition: border-color 0.2s ease;
+  }
+
+  .field select{ appearance: none; cursor: pointer; }
+
+  .field-select-wrap{ position: relative; }
+  .field-select-wrap::after{
+    content: '';
+    position: absolute;
+    right: 4px; top: 50%;
+    width: 8px; height: 8px;
+    border-right: 1.5px solid var(--ink);
+    border-bottom: 1.5px solid var(--ink);
+    transform: translateY(-70%) rotate(45deg);
+    pointer-events: none;
+  }
+
+  .field textarea{ resize: vertical; min-height: 110px; line-height: 1.5; font-size: 16px; }
+
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus{
+    outline: none;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 9px;
+  }
+
+  .field input::placeholder,
+  .field textarea::placeholder{ color: rgba(11,11,11,0.32); }
+
+  .form-submit{
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+    padding: 16px 30px;
+    background: var(--ink);
+    color: var(--paper);
+    border: 0;
+    font-family: var(--font-bold);
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+  }
+  .form-submit:hover{ background: #262626; }
+  .form-submit:active{ transform: scale(0.98); }
+
+  .form-message{
+    font-size: 14px;
+    color: rgba(11,11,11,0.6);
+  }
+  .form-message.is-error{ color: #a3271f; }
+  .form-message.is-success{ color: var(--ink); font-weight: 600; }
+
+  /* ================= Footer (shared with home page) ================= */
+  .page{ position: relative; z-index: 1; background: var(--paper); }
+
+  .site-footer{
+    position: sticky;
+    bottom: 0;
+    z-index: 0;
+    height: 100vh;
+    min-height: 560px;
+    background: var(--ink);
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .footer-inner{
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 var(--header-pad-x);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: clamp(32px, 6vw, 56px);
+  }
+
+  .footer-lead{
+    margin: 0;
+    font-family: var(--font-book);
+    font-weight: 400;
+    font-size: clamp(34px, 6vw, 76px);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+  }
+
+  .footer-email{
+    font-family: var(--font-bold);
+    font-weight: 700;
+    font-size: clamp(20px, 2.4vw, 28px);
+    text-decoration: none;
+    border-bottom: 2px solid currentColor;
+    padding-bottom: 4px;
+  }
+
+  .footer-bottom{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-top: clamp(24px, 5vw, 48px);
+    border-top: 1px solid rgba(253,253,251,0.18);
+    font-size: 14px;
+  }
+
+  .footer-logo{ font-family: var(--font-bold); font-weight: 700; font-size: 18px; }
+  .footer-social{ display: flex; gap: 28px; }
+  .footer-social a{ text-decoration: none; opacity: 0.8; }
+  .footer-social a:hover{ opacity: 1; }
+  .footer-copy{ opacity: 0.6; }
+
+  /* ================= Mobile ================= */
+  @media (max-width: 900px){
+    .contact-grid{ grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 760px){
+    :root{ --header-pad-x: 22px; --header-pad-y: 20px; }
+
+    .nav{
+      position: fixed; inset: 0; z-index: 45;
+      flex-direction: column; justify-content: center; align-items: flex-start;
+      gap: 28px; padding: 0 32px;
+      background: rgba(11,11,11,0.97);
+      color: var(--paper);
+      transform: translateY(-100%);
+      transition: transform 0.35s ease;
+    }
+    .nav[data-open="true"]{ transform: translateY(0); }
+    .nav a{ font-size: 32px; }
+    .nav-toggle{ display: inline-flex; z-index: 46; }
+
+    .form-row{ grid-template-columns: 1fr; }
+
+    .footer-bottom{ flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .nav{ transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="logo" href="index.html">chrismorgan</a>
+
+  <nav class="nav" id="siteNav" data-open="false">
+    <a href="showcase.html">showcase</a>
+    <a href="about.html">about</a>
+    <a href="contact.html" class="active">contact</a>
+    <a class="social" href="https://instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c2.72 0 3.06.01 4.12.06 1.06.05 1.79.22 2.43.47.66.26 1.22.6 1.77 1.15.55.55.9 1.11 1.15 1.77.25.64.42 1.37.47 2.43.05 1.06.06 1.4.06 4.12s-.01 3.06-.06 4.12c-.05 1.06-.22 1.79-.47 2.43-.26.66-.6 1.22-1.15 1.77-.55.55-1.11.9-1.77 1.15-.64.25-1.37.42-2.43.47-1.06.05-1.4.06-4.12.06s-3.06-.01-4.12-.06c-1.06-.05-1.79-.22-2.43-.47-.66-.26-1.22-.6-1.77-1.15-.55-.55-.9-1.11-1.15-1.77-.25-.64-.42-1.37-.47-2.43C2.01 15.06 2 14.72 2 12s.01-3.06.06-4.12c.05-1.06.22-1.79.47-2.43.26-.66.6-1.22 1.15-1.77.55-.55 1.11-.9 1.77-1.15.64-.25 1.37-.42 2.43-.47C8.94 2.01 9.28 2 12 2zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4zm5.4-8.4a1.2 1.2 0 1 0 0-2.4 1.2 1.2 0 0 0 0 2.4z"/></svg>
+    </a>
+  </nav>
+
+  <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="siteNav">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+      <path d="M3 6h18M3 12h18M3 18h18"/>
+    </svg>
+  </button>
+</header>
+
+<div class="page">
+
+  <section class="contact-hero">
+    <div class="contact-hero-inner">
+      <h1 class="contact-headline">Let's start<br>with the<br>problem.</h1>
+      <p class="contact-sub">Tell me what isn't working yet, or what you're about to build. I'll tell you what I'd actually do about it.</p>
+    </div>
+  </section>
+
+  <section class="contact-main">
+    <div class="contact-grid">
+
+      <div class="contact-info">
+        <div class="contact-info-block">
+          <p class="contact-info-label">Email</p>
+          <a class="contact-email-link" href="mailto:hello@chrismorgan.xyz">hello@chrismorgan.xyz</a>
+        </div>
+
+        <div class="contact-info-block">
+          <p class="contact-info-label">Availability</p>
+          <p class="contact-info-text">Currently booking new projects for Q2 2026. Reach out earlier if the timing is tight &mdash; it usually still works out.</p>
+        </div>
+
+        <div class="contact-info-block">
+          <p class="contact-info-label">Elsewhere</p>
+          <ul class="contact-social-list">
+            <li><a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a></li>
+            <li><a href="https://linkedin.com/" target="_blank" rel="noopener">LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <form class="contact-form" id="contactForm" action="https://formsubmit.co/hello@chrismorgan.xyz" method="POST" novalidate>
+        <input type="hidden" name="_subject" value="New project inquiry from chrismorgan.xyz">
+        <input type="hidden" name="_captcha" value="false">
+
+        <div class="form-row">
+          <div class="field">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="Name" placeholder="Your name" required>
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="Email" placeholder="you@company.com" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="project-type">Project type</label>
+            <div class="field-select-wrap">
+              <select id="project-type" name="Project type">
+                <option value="Brand architecture">Brand architecture</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Web design">Web design</option>
+                <option value="Something else">Something else</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="budget">Budget range</label>
+            <div class="field-select-wrap">
+              <select id="budget" name="Budget range">
+                <option value="Under $10k">Under $10k</option>
+                <option value="$10k–$25k">$10k&ndash;$25k</option>
+                <option value="$25k–$75k">$25k&ndash;$75k</option>
+                <option value="$75k+">$75k+</option>
+                <option value="Not sure yet">Not sure yet</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" name="Message" placeholder="What are you building, and what needs to be true for it to work?" required></textarea>
+        </div>
+
+        <button type="submit" class="form-submit">Send message</button>
+        <p class="form-message" id="formMessage"></p>
+      </form>
+
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer" id="contact-footer">
+  <div class="footer-inner">
+    <p class="footer-lead">Have a brand that<br>needs somewhere to go?</p>
+    <a class="footer-email" href="mailto:hello@chrismorgan.xyz">hello@chrismorgan.xyz</a>
+    <div class="footer-bottom">
+      <span class="footer-logo">chrismorgan</span>
+      <div class="footer-social">
+        <a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+      <span class="footer-copy">&copy; 2026 Chris Morgan</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  var toggle = document.getElementById('navToggle');
+  var nav = document.getElementById('siteNav');
+
+  toggle.addEventListener('click', function(){
+    var isOpen = nav.getAttribute('data-open') === 'true';
+    nav.setAttribute('data-open', String(!isOpen));
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+  });
+
+  nav.querySelectorAll('a').forEach(function(link){
+    link.addEventListener('click', function(){
+      nav.setAttribute('data-open', 'false');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  var heroEl = document.querySelector('.contact-hero');
+  function onScroll(){
+    var threshold = heroEl ? heroEl.offsetHeight * 0.7 : 400;
+    document.body.classList.toggle('scrolled', window.scrollY > threshold);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  var form = document.getElementById('contactForm');
+  var msg = document.getElementById('formMessage');
+
+  function handleSubmit(e){
+    e.preventDefault();
+    msg.className = 'form-message';
+
+    var name = form.querySelector('#name').value.trim();
+    var email = form.querySelector('#email').value.trim();
+    var message = form.querySelector('#message').value.trim();
+
+    if (!name || !email || !message){
+      msg.textContent = 'Please fill in your name, email and a short message before sending.';
+      msg.classList.add('is-error');
+      return;
+    }
+
+    msg.textContent = 'Sending\u2026';
+
+    var action = form.getAttribute('action');
+    var ajaxAction = action.indexOf('formsubmit.co') > -1 ? action.replace('formsubmit.co/', 'formsubmit.co/ajax/') : action;
+
+    fetch(ajaxAction, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } })
+      .then(function(res){ if (!res.ok) throw new Error('bad status'); return res.json().catch(function(){ return {}; }); })
+      .then(function(){
+        msg.textContent = 'Thanks \u2014 I\u2019ve got it, and I\u2019ll get back to you within a couple of days.';
+        msg.classList.add('is-success');
+        form.reset();
+      })
+      .catch(function(){
+        form.removeEventListener('submit', handleSubmit);
+        form.submit();
+      });
+  }
+
+  form.addEventListener('submit', handleSubmit);
+</script>
+
+</body>
+</html>
