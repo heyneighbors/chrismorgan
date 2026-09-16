@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Showcase — Chris Morgan</title>
+<meta name="description" content="Selected work by Chris Morgan — brand architecture, marketing and web design.">
+
+<!-- Fonts -->
+<link href="https://db.onlinewebfonts.com/c/302b82380cd9405bc10d5ea80045e6ac?family=Campton-Bold" rel="stylesheet">
+<link href="https://db.onlinewebfonts.com/c/dc9b06af64b02efa71cd0d1e97cb55e6?family=Campton+Book" rel="stylesheet">
+
+<style>
+  :root{
+    --font-bold: 'Campton-Bold', 'Helvetica Neue', Arial, sans-serif;
+    --font-book: 'Campton Book', 'Helvetica Neue', Arial, sans-serif;
+    --ink: #0b0b0b;
+    --paper: #fdfdfb;
+    --line: rgba(11,11,11,0.12);
+    --header-pad-x: 48px;
+    --header-pad-y: 28px;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html{
+    scroll-snap-type: y proximity;
+    scroll-behavior: smooth;
+  }
+
+  html, body{
+    margin: 0;
+    padding: 0;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font-book);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a{ color: inherit; }
+  body.menu-open{ overflow: hidden; }
+
+  :focus-visible{
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+
+  /* ================= Header (shared with home page) ================= */
+  .site-header{
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--header-pad-y) var(--header-pad-x);
+    color: var(--paper);
+  }
+
+  .logo{
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-decoration: none;
+    line-height: 1;
+    flex: 0 0 auto;
+  }
+
+  .logo img{
+    display: block;
+    width: clamp(70.2px, 6.3vw, 93.6px);
+    height: auto;
+    max-width: none;
+    transition: filter 0.3s ease, opacity 0.3s ease;
+  }
+
+  body.scrolled .logo img,
+  body[data-header-theme="light"] .logo img{
+    filter: brightness(0);
+  }
+
+  .nav{
+    display: flex;
+    align-items: center;
+    gap: clamp(24px, 4vw, 52px);
+  }
+
+  .nav a{
+    font-family: var(--font-book);
+    font-weight: 400;
+    font-size: 19px;
+    text-decoration: none;
+    line-height: 1;
+    padding-bottom: 6px;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.2s ease, opacity 0.2s ease;
+  }
+
+  .nav a.active{ border-bottom-color: currentColor; }
+  .nav a:not(.active):hover{ opacity: 0.6; }
+
+  .nav .social{ display: flex; align-items: center; }
+  .nav .social svg{ width: 19px; height: 19px; fill: currentColor; }
+
+  .nav-toggle{
+    display: none;
+    background: none;
+    border: 0;
+    padding: 6px;
+    cursor: pointer;
+    color: inherit;
+  }
+  .nav-toggle svg{ width: 26px; height: 26px; }
+
+  /* ================= Intro hero: "showcase." ================= */
+  .showcase-hero{
+    height: 100vh;
+    height: 100svh;
+    min-height: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .showcase-hero h1{
+    margin: 0;
+    font-family: var(--font-bold);
+    font-weight: 700;
+    font-size: clamp(56px, 12vw, 180px);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  /* ================= Project slides ================= */
+  .slide{
+    position: relative;
+    height: 100vh;
+    height: 100svh;
+    min-height: 560px;
+    overflow: hidden;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .slide-scrim-top{
+    position: absolute; top: 0; left: 0; right: 0; height: 55%;
+    background: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 100%);
+    pointer-events: none;
+  }
+
+  .slide-scrim-bottom{
+    position: absolute; bottom: 0; left: 0; right: 0; height: 40%;
+    background: linear-gradient(0deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+    pointer-events: none;
+  }
+
+  .slide-project-link{
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    text-indent: -9999px;
+    overflow: hidden;
+  }
+
+  .slide-headline{
+    position: absolute;
+    top: clamp(90px, 12vh, 160px);
+    left: var(--header-pad-x);
+    right: var(--header-pad-x);
+    max-width: 900px;
+    margin: 0;
+    font-family: var(--font-book);
+    font-weight: 400;
+    font-size: clamp(24px, 3.2vw, 40px);
+    line-height: 1.25;
+    letter-spacing: -0.005em;
+    z-index: 2;
+  }
+
+  .slide-headline .accent{ color: rgba(253,253,251,0.42); }
+
+  .slide-meta{
+    position: absolute;
+    left: var(--header-pad-x);
+    bottom: clamp(48px, 8vh, 88px);
+    max-width: 620px;
+    z-index: 2;
+  }
+
+  .slide-category{
+    margin: 0 0 12px;
+    font-family: var(--font-bold);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .slide-support{
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.55;
+    color: rgba(253,253,251,0.72);
+  }
+
+  /* ================= Vertical slide-number nav ================= */
+  .slide-nav{
+    position: fixed;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 18px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+
+  .slide-nav.visible{ opacity: 1; pointer-events: auto; }
+
+  .slide-nav button{
+    background: none;
+    border: 0;
+    padding: 2px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-book);
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    color: rgba(253,253,251,0.42);
+    transition: color 0.25s ease;
+  }
+
+  .slide-nav button::before{
+    content: '';
+    width: 0;
+    height: 1px;
+    background: currentColor;
+    transition: width 0.25s ease;
+  }
+
+  .slide-nav button.active{
+    color: var(--paper);
+  }
+
+  .slide-nav button.active::before{
+    width: 20px;
+  }
+
+  /* ================= Footer (shared with home page) ================= */
+  .page{
+    position: relative;
+    z-index: 1;
+    background: var(--ink);
+  }
+
+  .site-footer{
+    position: sticky;
+    bottom: 0;
+    z-index: 0;
+    height: 100vh;
+    min-height: 560px;
+    background: var(--ink);
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .footer-inner{
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 var(--header-pad-x);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: clamp(32px, 6vw, 56px);
+  }
+
+  .footer-lead{
+    margin: 0;
+    font-family: var(--font-book);
+    font-weight: 400;
+    font-size: clamp(34px, 6vw, 76px);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+  }
+
+  .footer-email{
+    font-family: var(--font-bold);
+    font-weight: 700;
+    font-size: clamp(20px, 2.4vw, 28px);
+    text-decoration: none;
+    border-bottom: 2px solid currentColor;
+    padding-bottom: 4px;
+  }
+
+  .footer-bottom{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-top: clamp(24px, 5vw, 48px);
+    border-top: 1px solid rgba(253,253,251,0.18);
+    font-size: 14px;
+  }
+
+  .footer-logo{
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+  }
+
+  .footer-logo img{
+    display: block;
+    width: 64.8px;
+    height: auto;
+    max-width: none;
+  }
+  .footer-social{ display: flex; gap: 28px; }
+  .footer-social a{ text-decoration: none; opacity: 0.8; }
+  .footer-social a:hover{ opacity: 1; }
+  .footer-copy{ opacity: 0.6; }
+
+  /* ================= Mobile ================= */
+  @media (max-width: 760px){
+    :root{ --header-pad-x: 22px; --header-pad-y: 20px; }
+
+    .nav{
+      position: fixed; inset: 0; z-index: 45;
+      flex-direction: column; justify-content: center; align-items: flex-start;
+      gap: 28px; padding: 0 32px;
+      background: rgba(11,11,11,0.97);
+      color: var(--paper);
+      transform: translateY(-100%);
+      transition: transform 0.35s ease;
+    }
+    .nav[data-open="true"]{ transform: translateY(0); }
+    .nav a{ font-size: 32px; }
+    .nav-toggle{ display: inline-flex; z-index: 46; }
+
+    .slide-headline{ font-size: clamp(22px, 6vw, 30px); top: 96px; }
+    .slide-meta{ bottom: 40px; max-width: none; right: 22px; }
+
+    .slide-nav{ right: 16px; gap: 12px; }
+    .slide-nav button span.num-label{ display:none; }
+
+    .footer-bottom{ flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-snap-type: none; scroll-behavior: auto; }
+    .nav, .slide-nav button, .slide-nav button::before{ transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="logo" href="index.html" aria-label="Chris Morgan home"><img src="assets/cm-logo.png" alt="Chris Morgan"></a>
+
+  <nav class="nav" id="siteNav" data-open="false">
+    <a href="showcase.html" class="active">showcase</a>
+    <a href="about.html">about</a>
+    <a href="contact.html">contact</a>
+    <a class="social" href="https://instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c2.72 0 3.06.01 4.12.06 1.06.05 1.79.22 2.43.47.66.26 1.22.6 1.77 1.15.55.55.9 1.11 1.15 1.77.25.64.42 1.37.47 2.43.05 1.06.06 1.4.06 4.12s-.01 3.06-.06 4.12c-.05 1.06-.22 1.79-.47 2.43-.26.66-.6 1.22-1.15 1.77-.55.55-1.11.9-1.77 1.15-.64.25-1.37.42-2.43.47-1.06.05-1.4.06-4.12.06s-3.06-.01-4.12-.06c-1.06-.05-1.79-.22-2.43-.47-.66-.26-1.22-.6-1.77-1.15-.55-.55-.9-1.11-1.15-1.77-.25-.64-.42-1.37-.47-2.43C2.01 15.06 2 14.72 2 12s.01-3.06.06-4.12c.05-1.06.22-1.79.47-2.43.26-.66.6-1.22 1.15-1.77.55-.55 1.11-.9 1.77-1.15.64-.25 1.37-.42 2.43-.47C8.94 2.01 9.28 2 12 2zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4zm5.4-8.4a1.2 1.2 0 1 0 0-2.4 1.2 1.2 0 0 0 0 2.4z"/></svg>
+    </a>
+  </nav>
+
+  <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="siteNav">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+      <path d="M3 6h18M3 12h18M3 18h18"/>
+    </svg>
+  </button>
+</header>
+
+<nav class="slide-nav" id="slideNav" aria-label="Project navigation">
+  <button data-target="slide-1"><span class="num-label">01</span></button>
+  <button data-target="slide-2"><span class="num-label">02</span></button>
+  <button data-target="slide-3"><span class="num-label">03</span></button>
+  <button data-target="slide-4"><span class="num-label">04</span></button>
+  <button data-target="slide-5"><span class="num-label">05</span></button>
+  <button data-target="slide-6"><span class="num-label">06</span></button>
+  <button data-target="slide-7"><span class="num-label">07</span></button>
+  <button data-target="slide-8"><span class="num-label">08</span></button>
+</nav>
+
+<div class="page">
+
+  <section class="showcase-hero">
+    <h1>showcase.</h1>
+  </section>
+
+  <section class="slide" id="slide-1" style="background-image:linear-gradient(120deg,#171029 0%,#2c1136 40%,#3a1550 70%,#120a22 100%);">
+    <a class="slide-project-link" href="project.html" aria-label="View Fenwick Optics project"></a>
+    <div class="slide-scrim-top"></div>
+    <div class="slide-scrim-bottom"></div>
+    <p class="slide-headline">By combining considered typography and a restrained colour system, <span class="accent">Fenwick Optics</span> carries one idea across every lens, every shelf and every screen.</p>
+    <div class="slide-meta">
+      <p class="slide-category">Brand identity and web design</p>
+      <p class="slide-support">This consistency turned a first-time buyer into a repeat customer, and a repeat customer into a referral.</p>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-2" style="background-image:linear-gradient(120deg,#f4f1ea 0%,#cfcabd 100%);">
+    <div class="slide-scrim-top"></div>
+    <div class="slide-scrim-bottom"></div>
+    <p class="slide-headline" style="color:#0b0b0b;">By simplifying a complex product into a handful of clear decisions, <span class="accent" style="color:rgba(11,11,11,0.42);">Halo Finance</span> turns a stressful task into one users actually finish.</p>
+    <div class="slide-meta">
+      <p class="slide-category" style="color:#0b0b0b;">Product design</p>
+      <p class="slide-support" style="color:rgba(11,11,11,0.65);">Fewer steps meant fewer drop-offs, and a support inbox that finally went quiet.</p>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-3" style="background-image:linear-gradient(120deg,#e7c9a3 0%,#c65fa0 60%,#7b2f6e 100%);">
+    <div class="slide-scrim-top"></div>
+    <div class="slide-scrim-bottom"></div>
+    <p class="slide-headline">By building a naming and packaging system from the ground up, <span class="accent">Northbound Coffee</span> earned shelf space next to brands three times its size.</p>
+    <div class="slide-meta">
+      <p class="slide-category">Brand architecture and packaging</p>
+      <p class="slide-support">A single visual language now carries the brand from bag to storefront to delivery box.</p>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-4" style="background-image:linear-gradient(160deg,#0d1416 0%,#1b2b2e 55%,#a9bcbe 100%);">
+    <div class="slide-scrim-top"></div>
+    <div class="slide-scrim-bottom"></div>
+    <p class="slide-headline">By treating every page as part of one continuous argument, <span class="accent">Ledger &amp; Co's</span> site turns a skeptical visitor into a booked call.</p>
+    <div class="slide-meta">
+      <p class="slide-category">Web design</p>
+      <p class="slide-support">Time on site nearly doubled once the story finally matched the product.</p>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-5" style="background-image:linear-gradient(120deg,#f2d6c4 0%,#e9a58a 100%);">
+    <div class="slide-scrim-top"></div>
+    <div class="slide-scrim-bottom"></div>
+    <p class="slide-headline" style="color:#0b0b0b;">By anchoring every channel to a single campaign idea, <span class="accent" style="color:rgba(11,11,11,0.42);">Marrow Studio</span> said one thing well instead of ten things quietly.</p>
+    <div class="slide-meta">
+      <p class="slide-category" style="color:#0b0b0b;">Marketing campaign</p>
+      <p class="slide-support" style="color:rgba(11,11,11,0.65);">The result travelled further on a smaller budget than any campaign before it.</p>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-6" style="background-image:linear-gradient(120deg,#eef0d2 0%,#dce7b8 100%);">
+    <div class="slide-scrim-top"></div>
+    <div class="slide-scrim-bottom"></div>
+    <p class="slide-headline" style="color:#0b0b0b;">By leading with warmth instead of clinical language, <span class="accent" style="color:rgba(11,11,11,0.42);">Petal Health</span> made a hard subject easier to start talking about.</p>
+    <div class="slide-meta">
+      <p class="slide-category" style="color:#0b0b0b;">Brand identity</p>
+      <p class="slide-support" style="color:rgba(11,11,11,0.65);">Patients now describe the brand as the reason they finally booked an appointment.</p>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-7" style="background-image:linear-gradient(160deg,#050912 0%,#0c1e4d 55%,#1f6fd6 100%);">
+    <div class="slide-scrim-top"></div>
+    <div class="slide-scrim-bottom"></div>
+    <p class="slide-headline">By pairing a sharper site with a clearer campaign, <span class="accent">Vantage Systems</span> started conversations with buyers who'd never heard of them.</p>
+    <div class="slide-meta">
+      <p class="slide-category">Web design and marketing</p>
+      <p class="slide-support">Inbound enquiries moved from a trickle to the sales team's main source of leads.</p>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-8" style="background-image:linear-gradient(120deg,#f3d9ec 0%,#d9a8e0 100%);">
+    <div class="slide-scrim-top"></div>
+    <div class="slide-scrim-bottom"></div>
+    <p class="slide-headline" style="color:#0b0b0b;">By designing around the moment someone decides to act, <span class="accent" style="color:rgba(11,11,11,0.42);">Civic Forward</span> turned attention into signatures, and signatures into members.</p>
+    <div class="slide-meta">
+      <p class="slide-category" style="color:#0b0b0b;">Web design</p>
+      <p class="slide-support" style="color:rgba(11,11,11,0.65);">The organisation's list grew faster in three months than in the two years before it.</p>
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer" id="contact">
+  <div class="footer-inner">
+    <p class="footer-lead">Have a brand that<br>needs somewhere to go?</p>
+    <a class="footer-email" href="mailto:hello@chrismorgan.xyz">hello@chrismorgan.xyz</a>
+    <div class="footer-bottom">
+      <span class="footer-logo" aria-label="Chris Morgan"><img src="assets/cm-logo.png" alt="Chris Morgan"></span>
+      <div class="footer-social">
+        <a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+      <span class="footer-copy">&copy; 2026 Chris Morgan</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  var toggle = document.getElementById('navToggle');
+  var nav = document.getElementById('siteNav');
+
+  toggle.addEventListener('click', function(){
+    var isOpen = nav.getAttribute('data-open') === 'true';
+    nav.setAttribute('data-open', String(!isOpen));
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+    document.body.classList.toggle('menu-open', !isOpen);
+  });
+
+  nav.querySelectorAll('a').forEach(function(link){
+    link.addEventListener('click', function(){
+      nav.setAttribute('data-open', 'false');
+      toggle.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('menu-open');
+    });
+  });
+
+  /* Slide-number nav: highlight active slide + click to jump */
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var slideNav = document.getElementById('slideNav');
+  var navButtons = Array.prototype.slice.call(slideNav.querySelectorAll('button'));
+
+  navButtons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var target = document.getElementById(btn.getAttribute('data-target'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  var observer = new IntersectionObserver(function(entries){
+    var anyVisible = false;
+    entries.forEach(function(entry){
+      if (entry.isIntersecting){
+        anyVisible = true;
+        navButtons.forEach(function(btn){
+          btn.classList.toggle('active', btn.getAttribute('data-target') === entry.target.id);
+        });
+      }
+    });
+    if (anyVisible) {
+      slideNav.classList.add('visible');
+    } else {
+      var stillInside = slides.some(function(s){
+        var r = s.getBoundingClientRect();
+        return r.top < window.innerHeight * 0.5 && r.bottom > window.innerHeight * 0.5;
+      });
+      if (!stillInside) slideNav.classList.remove('visible');
+    }
+  }, { threshold: 0.6 });
+
+  slides.forEach(function(s){ observer.observe(s); });
+</script>
+
+</body>
+</html>
